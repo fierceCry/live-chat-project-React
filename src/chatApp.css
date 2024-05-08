@@ -1,5 +1,5 @@
 .chat-container {
-  max-width: 350px;
+  max-width: 400px;
   height: 600px;
   margin: 20px auto;
   border: 1px solid #e5e5e5;
@@ -8,82 +8,76 @@
   display: flex;
   flex-direction: column;
   background-color: #fafafa;
-}
-
-h2 {
-  background-color: #fee500;
-  color: black;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  }
+  
+  .chat-container h2 {
+  background-color: #4e5aff; /* 배경색 변경 /
+  color: white; / 텍스트 색 변경 */
   padding: 10px;
   margin: 0;
   text-align: center;
-}
-
-.my-message {
-  margin: 5px;
-  padding: 8px;
-  background-color: #dcf8c6; /* 카카오톡에서 사용자 메시지의 배경색과 유사합니다. */
-  border-radius: 5px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-  align-self: flex-end; /* 자신의 메시지를 오른쪽에 배치합니다. */
-}
-
-.other-message {
-  margin: 5px;
-  padding: 8px;
-  background-color: #ffffff;
-  border-radius: 5px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-  align-self: flex-start; /* 다른 사용자의 메시지를 왼쪽에 배치합니다. */
-}
-
-.messages {
+  font-size: 18px;
+  font-weight: bold;
+  }
+  
+  .messages {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   padding: 10px;
   overflow-y: auto;
   background-color: #ffffff;
-}
-
-.messages p {
-  margin: 5px 0;
-  padding: 8px;
-  background-color: #f0f0f0;
-  border-radius: 20px;
+  }
+  
+  .my-message, .other-message {
+  margin: 5px;
+  padding: 8px 15px;
+  border-radius: 15px;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  max-width: 70%;
+  word-wrap: break-word;
+  }
+  
+  .my-message {
+  align-self: flex-end;
+  background-color: #4e5aff; /* 자신의 메시지 배경색 변경 /
+  color: white; / 자신의 메시지 텍스트 색 변경 */
+  }
+  
+  .other-message {
+  align-self: flex-start;
+  background-color: #ffffff;
+  border: 2px solid #4e5aff; /* 상대방 메시지 테두리 색 변경 */
+  }
+  /* 기존 스타일에 추가 */
+.chat-input {
+  display: flex;
+  padding: 10px;
+  background-color: #f0f0f0; /* 배경색 변경 */
 }
 
-input[type="text"] {
+.chat-input input[type="text"] {
   flex-grow: 1;
   padding: 10px;
-  border: none;
-  border-top: 2px solid #fee500;
-}
-
-button {
-  padding: 10px 20px;
-  border: none;
-  background-color: #fee500;
-  color: black;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #e5d900;
-}
-
-/* 입력란과 버튼을 가로로 배치 */
-input[type="text"], button {
-  flex: 1;
-  margin: 0;
+  margin-right: 10px; /* 오른쪽 여백 추가 */
+  border: 2px solid #4e5aff; /* 테두리 색 변경 */
+  border-radius: 20px; /* 둥근 모서리 */
+  background-color: #ffffff;
   font-size: 16px;
 }
 
-/* 하단의 입력란과 버튼 컨테이너 */
-.chat-container > div:last-child {
-  display: flex;
+.chat-input button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #4e5aff; /* 버튼 배경색 변경 */
+  color: white; /* 버튼 텍스트 색 변경 */
+  cursor: pointer;
+  border-radius: 20px; /* 둥근 모서리 */
+  font-size: 16px;
 }
 
-input[type="text"] {
-  border-right: 2px solid #fee500;
+.chat-input button:hover {
+  background-color: #3d4ecc; /* 버튼 호버 상태 색 변경 */
 }

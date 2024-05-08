@@ -9,35 +9,35 @@ function ChatApp() {
   const [input, setInput] = useState("");
   const [username, setUsername] = useState("");
   const messagesEndRef = useRef(null);
+  const hasAskedUsername = useRef(false);
 
   useEffect(() => {
-    function askUsernameOnce() {
-      if (!username) {
-        const inputUsername = prompt("이름을 입력하세요:", "User");
-        setUsername(inputUsername);
-        
-        if (inputUsername) {
-          socket.emit('join', inputUsername);
-        }
+    if (!hasAskedUsername.current) {
+      const inputUsername = prompt("이름을 입력하세요:", "User");
+      setUsername(inputUsername);
+
+      if (inputUsername) {
+        socket.emit("join", { username: inputUsername });
       }
+
+      hasAskedUsername.current = true;
     }
 
-    askUsernameOnce();
-  
     socket.on("init", (loadedMessages) => {
       setMessages(loadedMessages);
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     });
-  
+
     socket.on("message", (message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
     });
-  
+
     return () => {
       socket.off("init");
       socket.off("message");
     };
   }, []);
-  
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -48,7 +48,7 @@ function ChatApp() {
       setInput("");
     }
   };
-
+  
   const handleInput = (e) => {
     setInput(e.target.value);
   };
@@ -60,7 +60,6 @@ function ChatApp() {
     }
   };
 
-
   return (
     <div className="chat-container">
       <h2>Chat</h2>
@@ -69,17 +68,21 @@ function ChatApp() {
           <p
             key={index}
             className={msg.sender === username ? "my-message" : "other-message"}
-          >{`${msg.sender}: ${msg.content}`}</p>
+          >
+            {msg.sender ? `${msg.sender}: ${msg.content}` : msg.content}
+          </p>
         ))}
         <div ref={messagesEndRef} />
       </div>
-      <input
-        type="text"
-        value={input}
-        onChange={handleInput}
-        onKeyPress={handleKeyPress}
-      />
-      <button onClick={sendMessage}>Send</button>
+      <div className="chat-input">
+        <input
+          type="text"
+          value={input}
+          onChange={handleInput}
+          onKeyPress={handleKeyPress}
+        />
+        <button onClick={sendMessage}>Send</button>
+      </div>
     </div>
   );
 }
