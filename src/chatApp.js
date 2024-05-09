@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import io from "socket.io-client";
-import "./chatApp.css";
+import "./ChatApp.css";
 
 const socket = io("http://localhost:3095");
-
+console.log(socket)
 function ChatApp() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -12,6 +12,8 @@ function ChatApp() {
   const hasAskedUsername = useRef(false);
 
   useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    console.log(accessToken)
     if (!hasAskedUsername.current) {
       const inputUsername = prompt("이름을 입력하세요:", "User");
       setUsername(inputUsername);

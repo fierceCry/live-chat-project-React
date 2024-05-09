@@ -1,14 +1,13 @@
+// index.js
+
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import ChatApp from './chatApp'; // App 대신 ChatApp을 import합니다.
-import reportWebVitals from './reportWebVitals';
+import { createRoot } from 'react-dom/client'; // react-dom/client에서 가져옵니다.
+import { BrowserRouter } from 'react-router-dom';
+import App from './App';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <ChatApp /> {/* App 대신 ChatApp을 여기서 사용합니다. */}
-  </React.StrictMode>
+// ReactDOM.render 대신 createRoot를 사용합니다.
+createRoot(document.getElementById('root')).render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
 );
-
-reportWebVitals();
