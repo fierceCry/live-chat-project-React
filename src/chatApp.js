@@ -1,51 +1,58 @@
 import React, { useEffect, useState, useRef } from "react";
 import io from "socket.io-client";
 import "./ChatApp.css";
+import { useNavigate } from 'react-router-dom';
 
-const socket = io("http://localhost:3095");
-console.log(socket)
 function ChatApp() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [username, setUsername] = useState("");
   const messagesEndRef = useRef(null);
   const hasAskedUsername = useRef(false);
+  const navigate = useNavigate();
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
-    console.log(accessToken)
-    if (!hasAskedUsername.current) {
-      const inputUsername = prompt("이름을 입력하세요:", "User");
-      setUsername(inputUsername);
+    const userName = localStorage.getItem("nickName") || ""; // 기본값 설정
 
-      if (inputUsername) {
-        socket.emit("join", { username: inputUsername });
-      }
+    setUsername(userName); // username 상태 변수 업데이트
 
-      hasAskedUsername.current = true;
+    console.log(userName)
+    if(!accessToken){
+      console.log('토큰없음')
+      navigate('/'); // 페이지 이동
     }
 
-    socket.on("init", (loadedMessages) => {
+    const newSocket = io("http://localhost:3095", {
+      query: { token: accessToken }
+    });
+    setSocket(newSocket);
+
+    newSocket.emit("join", { accessToken: accessToken });
+
+    newSocket.on("init", (loadedMessages) => {
       setMessages(loadedMessages);
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     });
 
-    socket.on("message", (message) => {
+    newSocket.on("message", (message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
     });
 
     return () => {
-      socket.off("init");
-      socket.off("message");
+      newSocket.off("init");
+      newSocket.off("message");
+      newSocket.close();
     };
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   const sendMessage = () => {
-    if (input.trim()) {
+    if (input.trim() && socket) {
       socket.emit("message", { sender: username, content: input });
       setInput("");
     }
