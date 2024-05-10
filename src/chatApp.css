@@ -22,15 +22,6 @@
   font-weight: bold;
   }
   
-  .messages {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  padding: 10px;
-  overflow-y: auto;
-  background-color: #ffffff;
-  }
-  
   .my-message, .other-message {
   margin: 5px;
   padding: 8px 15px;
@@ -38,6 +29,14 @@
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   max-width: 70%;
   word-wrap: break-word;
+  }
+  .messages {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 10px;
+  overflow-y: auto;
+  background-color: #ffffff;
   }
   
   .my-message {
