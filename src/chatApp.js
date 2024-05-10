@@ -9,7 +9,6 @@ function ChatApp() {
   const [input, setInput] = useState(""); // 메시지를 입력하는 입력 필드
   const [username, setUsername] = useState(""); // 현재 사용자의 이름
   const messagesEndRef = useRef(null); // 메시지를 맨 아래로 스크롤하기 위한 ref
-  const hasAskedUsername = useRef(false); // 사용자 이름을 물어본 적이 있는지 추적하는 ref
   const navigate = useNavigate(); // 페이지 간 이동을 위한 훅
   const [socket, setSocket] = useState(null); // 소켓 연결을 위한 상태 변수
 
@@ -17,12 +16,11 @@ function ChatApp() {
     // 컴포넌트가 마운트되거나 업데이트될 때 실행되는 함수
     const accessToken = localStorage.getItem("accessToken"); // 로컬 스토리지에서 액세스 토큰 가져오기
     const userName = localStorage.getItem("nickName"); // 로컬 스토리지에서 사용자 이름 가져오기
-    
-    console.log("chat:"+accessToken)
-    console.log("chat:"+userName)
+
     setUsername(userName); // 사용자 이름 상태 변수 설정
     if (!accessToken) {
       // 액세스 토큰이 없으면 로그인 페이지로 이동
+      alert("로그인해야합니다.")
       navigate("/");
     }
 
@@ -30,6 +28,7 @@ function ChatApp() {
     const newSocket = io("http://localhost:3095", {
       query: { token: accessToken }, // 쿼리 매개변수로 액세스 토큰 전달
     });
+    
     setSocket(newSocket); // 새로운 소켓 인스턴스로 소켓 상태 변수 설정
 
     // 연결 시 서버에 'join' 이벤트 전송
@@ -43,7 +42,6 @@ function ChatApp() {
 
     // 서버에서 새 메시지 수신 이벤트 리스너
     newSocket.on("message", (message) => {
-      console.log(message)
       setMessages((prevMessages) => [...prevMessages, message]); // 새 메시지를 메시지 상태 변수에 추가
     });
 
