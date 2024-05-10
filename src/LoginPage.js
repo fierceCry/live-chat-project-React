@@ -21,10 +21,7 @@ function LoginPage() {
         body: JSON.stringify({ email, password }),
       });
       const data = await response.json();
-      console.log(data)
-      console.log(data.nickName)
-      console.log(data.data.nickName)
-      console.log(data.data.accessToken)
+      console.log('login:'+ data)
       if (data.message === '비밀번호가 일치하지 않습니다') {
         alert('패스워드 오류');
       } else if (data.message === '사용자를 찾을 수 없습니다') {

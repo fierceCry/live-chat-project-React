@@ -17,7 +17,9 @@ function ChatApp() {
     // 컴포넌트가 마운트되거나 업데이트될 때 실행되는 함수
     const accessToken = localStorage.getItem("accessToken"); // 로컬 스토리지에서 액세스 토큰 가져오기
     const userName = localStorage.getItem("nickName"); // 로컬 스토리지에서 사용자 이름 가져오기
-
+    
+    console.log("chat:"+accessToken)
+    console.log("chat:"+userName)
     setUsername(userName); // 사용자 이름 상태 변수 설정
     if (!accessToken) {
       // 액세스 토큰이 없으면 로그인 페이지로 이동
@@ -41,6 +43,7 @@ function ChatApp() {
 
     // 서버에서 새 메시지 수신 이벤트 리스너
     newSocket.on("message", (message) => {
+      console.log(message)
       setMessages((prevMessages) => [...prevMessages, message]); // 새 메시지를 메시지 상태 변수에 추가
     });
 
