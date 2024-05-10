@@ -21,7 +21,6 @@ function LoginPage() {
         body: JSON.stringify({ email, password }),
       });
       const data = await response.json();
-      console.log('login:'+ data)
       if (data.message === '비밀번호가 일치하지 않습니다') {
         alert('패스워드 오류');
       } else if (data.message === '사용자를 찾을 수 없습니다') {
@@ -29,6 +28,7 @@ function LoginPage() {
       } else if (response.ok || data.data.accessToken) {
         localStorage.setItem("accessToken", data.data.accessToken);
         localStorage.setItem("nickName", data.data.nickName);
+        localStorage.setItem("email", data.data.email);
         alert('로그인 성공!'); // 페이지 이동 후에 alert를 호출합니다.
         navigate('/chat'); // 페이지 이동
       }

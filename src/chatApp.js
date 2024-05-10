@@ -8,6 +8,8 @@ function ChatApp() {
   const [messages, setMessages] = useState([]); // 채팅 메시지를 저장하는 배열
   const [input, setInput] = useState(""); // 메시지를 입력하는 입력 필드
   const [username, setUsername] = useState(""); // 현재 사용자의 이름
+  const [userEmail, setUserEmail] = useState(""); // 현재 사용자의 이메일
+
   const messagesEndRef = useRef(null); // 메시지를 맨 아래로 스크롤하기 위한 ref
   const navigate = useNavigate(); // 페이지 간 이동을 위한 훅
   const [socket, setSocket] = useState(null); // 소켓 연결을 위한 상태 변수
@@ -16,11 +18,14 @@ function ChatApp() {
     // 컴포넌트가 마운트되거나 업데이트될 때 실행되는 함수
     const accessToken = localStorage.getItem("accessToken"); // 로컬 스토리지에서 액세스 토큰 가져오기
     const userName = localStorage.getItem("nickName"); // 로컬 스토리지에서 사용자 이름 가져오기
-
+    const userEmail = localStorage.getItem("email"); // 로컬 스토리지에서 사용자 이메일 가져오기
+    console.log(userEmail)
     setUsername(userName); // 사용자 이름 상태 변수 설정
+    setUserEmail(userEmail); // 사용자 이메일 상태 변수 설정
+
     if (!accessToken) {
       // 액세스 토큰이 없으면 로그인 페이지로 이동
-      alert("로그인해야합니다.")
+      alert("로그인해야합니다.");
       navigate("/");
     }
 
@@ -28,7 +33,7 @@ function ChatApp() {
     const newSocket = io("http://localhost:3095", {
       query: { token: accessToken }, // 쿼리 매개변수로 액세스 토큰 전달
     });
-    
+
     setSocket(newSocket); // 새로운 소켓 인스턴스로 소켓 상태 변수 설정
 
     // 연결 시 서버에 'join' 이벤트 전송
@@ -89,16 +94,17 @@ function ChatApp() {
         {/* 메시지 배열을 매핑하고 각 메시지를 렌더링 */}
         {messages.map((msg, index) => (
           <p
-            key={index}
-            className={
-              msg.nickName === username ? "my-message" : "other-message"
-            }
-          >
-            {/* 발신자 이름과 함께 메시지 내용 표시 */}
-            {msg.nickName ? `${msg.nickName}: ${msg.content}` : msg.content}
-          </p>
+          key={index}
+          className={
+            msg.email === userEmail ? "my-message" : "other-message"
+          }
+        >
+          {/* 발신자 이름과 함께 메시지 내용 표시 */}
+          {msg.nickName ? `${msg.nickName}: ${msg.content}` : msg.content}
+        </p>
         ))}
-        <div ref={messagesEndRef} /> {/* 메시지를 맨 아래로 스크롤하기 위한 빈 div */}
+        <div ref={messagesEndRef} />{" "}
+        {/* 메시지를 맨 아래로 스크롤하기 위한 빈 div */}
       </div>
 
       {/* 메시지를 입력하는 입력 필드 */}
